@@ -5,6 +5,7 @@ struct Bigint {
     // constructors
     Bigint() {} // default constructor
     Bigint( string b ) { (*this) = b; } // constructor for string
+    string num() { return a; }
     // some helpful methods
     int size() { // returns number of digits
         return a.size();
@@ -19,6 +20,8 @@ struct Bigint {
         sign = ( a.size() == 1 && a[0] == '0' ) ? 1 : newSign;
         return (*this);
     }
+    
+    
     // assignment operator
     void operator = ( string b ) { // assigns a string to Bigint
         a = b[0] == '-' ? b.substr(1) : b;
@@ -43,8 +46,8 @@ struct Bigint {
     Bigint operator + ( Bigint b ) { // addition operator overloading
         if( sign != b.sign ) return (*this) - b.inverseSign();
         Bigint c;
-        for(int i = 0, carry = 0; i<(int)a.size() || i<b.size() || carry; i++ ) {
-            carry+=(i<(int)a.size() ? a[i]-48 : 0)+(i<b.a.size() ? b.a[i]-48 : 0);
+        for(int i = 0, carry = 0; i<(int)a.size() || i<(int)b.size() || carry; i++ ) {
+            carry+=(i<(int)a.size() ? a[i]-48 : 0)+(i<(int)b.a.size() ? b.a[i]-48 : 0);
             c.a += (carry % 10 + 48);
             carry /= 10;
         }
@@ -100,7 +103,10 @@ struct Bigint {
         for( int i = a.size() - 1; i >= 0; i-- ) putchar(a[i]);
     }
 };
-
+Bigint zero = Bigint("0");
+Bigint one = Bigint("1");
+Bigint two = Bigint("2");
+Bigint ten = Bigint("10");
 Bigint gcd(Bigint a, Bigint b){ 
     string s = "0";
     Bigint temp = s;
