@@ -1,0 +1,4 @@
+For each ‘i’, we can either: 
+1. Don’t select the item ‘i’.
+2. Fill the item ‘i’ in first knapsack.
+3. Fill the item ‘i’ in second knapsack.
