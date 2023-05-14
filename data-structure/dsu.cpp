@@ -1,6 +1,6 @@
 // code 1
-const int MX = 2e5;
-int dsu[MX+5], sz[MX+5];
+const int N = 2e5;
+int dsu[N+5], sz[N+5];
 // sz[] is initialized by value 1;
 // dsu[] if initialized by dsu[K] = K
 

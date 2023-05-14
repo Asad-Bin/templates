@@ -50,7 +50,7 @@ void update(int at, int l, int r, int idx, int num)
 int query(int at, int l, int r, int L, int R)
 {
 	// query from l to r.
-	if(R < l || L > r) return 0;
+	if(r < l || R < l || L > r) return 0;
 	if(L <= l && r <= R) return sum[at];
 	
 	int mid = (l+r)/2;

@@ -1,6 +1,7 @@
-const int N= 1e5+5,LOG= 20;
-int depth[N],up[N][LOG];
+const int N= 1e5+5, LOG= 20;
+int depth[N+5], up[N+5][LOG];
 vector<int> v[N];
+
 void dfs(int pos,int pre)
 {
    for(auto it:v[pos])
@@ -14,7 +15,6 @@ void dfs(int pos,int pre)
       }
       dfs(it,pos);
    }
-   return ;
 }
 int kthancestor(int pos,int k)
 {
@@ -47,3 +47,6 @@ int get_lca(int a, int b)
     return up[a][0];
 }
 
+
+// initialize with ...
+up[root][0] = root;
