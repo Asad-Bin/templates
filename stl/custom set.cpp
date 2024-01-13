@@ -1,12 +1,13 @@
 //...Bismillahir Rahmanir Rahim...
  
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 
 typedef long long ll;
+
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 
 typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> indexed_set;
 
@@ -38,7 +39,7 @@ struct ordered_multiset { // multiset supporting duplicating values in set
 
 	inline ll lower_bound(ll x){      // Count of value <x in treap
 		x += MAXVAL;
-		ll c = mp[x];
+		ll c = 0;
 		return (T.order_of_key((x*ADD)+c)); } 
 
 	inline ll upper_bound(ll x){      // Count of value <=x in treap

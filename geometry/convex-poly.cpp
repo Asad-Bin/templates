@@ -13,11 +13,10 @@ struct pt {
     long long dot(const pt &a, const pt &b) const { return (a - *this).dot(b - *this); }
     long long sqrLen() const { return this->dot(*this); }
 };
-bool lexComp(const pt &l, const pt &r) { return l.x < r.x || (l.x == r.x && l.y < r.y); }
+
 int sgn(long long val) { return val > 0 ? 1 : (val == 0 ? 0 : -1); }
-vector<pt> seq;
-pt translation;
-int n;
+
+
 bool pointInTriangle(pt a, pt b, pt c, pt point) {
     long long s1 = abs(a.cross(b, c));
     long long s2 = abs(point.cross(a, b)) + abs(point.cross(b, c)) + abs(point.cross(c, a));

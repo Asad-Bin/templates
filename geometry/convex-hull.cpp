@@ -14,7 +14,6 @@ int orientation(PT a, PT b, PT c) {
     if (v > 0) return +1; // counter-clockwise
     return 0;
 }
- 
 bool cw(PT a, PT b, PT c, bool include_collinear) {
     int o = orientation(a, b, c);
     return o < 0 || (include_collinear && o == 0);
@@ -23,7 +22,6 @@ bool ccw(PT a, PT b, PT c, bool include_collinear) {
     int o = orientation(a, b, c);
     return o > 0 || (include_collinear && o == 0);
 }
-
 // Be cautious about 'include_collinear
 void convex_hull(vector<PT>& ara, bool include_collinear = false) {
     if (ara.size() == 1)
@@ -32,6 +30,7 @@ void convex_hull(vector<PT>& ara, bool include_collinear = false) {
     sort(ara.begin(), ara.end(), [](PT a, PT b) {
         return make_pair(a.x, a.y) < make_pair(b.x, b.y);
     });
+    
     PT p1 = ara[0], p2 = ara.back();
     vector<PT> up, down;
     up.push_back(p1);
