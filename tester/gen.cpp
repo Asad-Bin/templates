@@ -1,83 +1,105 @@
-#include <bits/stdc++.h>
-
+#include<bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
-
-// int mrand(int a, int b)
-// {
-// 	return a+rand()%(b-a+1);
-// }
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-ll  mrand(ll l, ll r) {
-    return uniform_int_distribution<ll>(l,r) (rng);
+
+int rand(int l, int r){
+    uniform_int_distribution<int> uid(l, r);
+    return uid(rng);
 }
-int main(int argc, char* argv[])
+
+// Random n numbers between l and r
+void num(int l, int r, int n) {
+    for (int i = 0; i < n; ++i)
+    {
+        cout << rand(l,r) << " ";
+    }
+}
+ 
+//Random n real numbers between l and r with dig decimal places
+void real(int l, int r, int dig, int n) {
+    for (int i = 0; i < n; ++i)
+    {
+        cout << rand(l,r) <<"."<<rand(0,pow(10,dig)-1)<< " ";
+    }
+}
+
+// Random n strings of length l
+void str(int l, int n) {
+    for (int i = 0; i < n; ++i)
+    {
+        for(int j = 0; j < l; ++j) {
+            int v = rand(1,150);
+            if(v%3==0) cout<<(char)rand('a','z');
+            else if(v%3==1) cout<<(char)rand('A','Z');
+            else cout<<rand(0,9);
+        }
+        cout<<" ";
+    }
+}
+
+// Random n strings of max length l
+void strmx(int mxlen, int n) {
+    for (int i = 0; i < n; ++i)
+    {
+        int l = rand(1,mxlen);
+        for(int j = 0; j < l; ++j) {
+            int v = rand(1,150);
+            if(3%3==0) cout<<(char)rand('a','z');
+            else if(v%3==1) cout<<(char)rand('A','Z');
+            else cout<<rand(0,9);
+        }
+        cout<<" ";
+    }
+} 
+
+// Random tree of n nodes
+void tree(int n) {
+    int prufer[n-2];
+    for ( int i = 0; i < n; i++ ){
+        prufer[i] = rand(1,n);
+    }
+    int m = n-2;
+    int vertices = m + 2; 
+    int vertex_set[vertices]; 
+    for (int i = 0; i < vertices; i++) 
+        vertex_set[i] = 0; 
+    for (int i = 0; i < vertices - 2; i++) 
+        vertex_set[prufer[i] - 1] += 1; 
+    int j = 0; 
+    for (int i = 0; i < vertices - 2; i++) { 
+        for (j = 0; j < vertices; j++) { 
+            if (vertex_set[j] == 0) { 
+                vertex_set[j] = -1; 
+                cout << (j + 1) << " "
+                     << prufer[i] << '\n'; 
+                vertex_set[prufer[i] - 1]--; 
+                break; 
+            } 
+        } 
+    } 
+    j = 0; 
+    for (int i = 0; i < vertices; i++) { 
+        if (vertex_set[i] == 0 && j == 0) { 
+            cout << (i + 1) << " "; 
+            j++; 
+        } 
+        else if (vertex_set[i] == 0 && j == 1) 
+            cout << (i + 1) << "\n"; 
+    }
+}
+signed main()
 {
-	srand(atoi(argv[1]));
-	
-	int t = mrand(1, 10);
-	cout << t << "\n";
-	
-	while(t--){
-		ll a = mrand(1, 1000000);
-		ll b = mrand(1, 1000000);
-		ll c = mrand(1, 1000000);
+    cout << 10 << "\n";
+    for(int K = 0; K < 10; K++){
+        int n, t;
+        n = rand(1, 5); t = rand(1, 10);
+        cout << n << ' ' << t << "\n";
+        for(int L = 0; L < n; L++){
+            int l = rand(0, 10);
+            int r = rand(l+1, 11);
 
-		cout << a << ' ' << b << ' ' << c << "\n";
-		
-		
-		// ll l = mrand(1, n*(n-1)+1);
-		// ll r = mrand(l, n*(n-1)+1);
-		
-		// cout << n << ' ' << l << ' ' << r << "\n";
-	}
-	
-	// cout << 10000<< "\n";
-	// for(int K = 1; K <= 10000; K++) cout << mrand(10000000, 1000000000) << ' ' << 10 << "\n";
+            cout << l << ' ' << r << "\n";
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

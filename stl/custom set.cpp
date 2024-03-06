@@ -52,13 +52,18 @@ struct ordered_multiset { // multiset supporting duplicating values in set
 
 int main()
 {
-	indexed_set s1;
+	// indexed_set s1;
 	ordered_multiset s2;
 	
 	//  .. operations ..
 	//  same ones as set..
 	///  extra: 1. s.order_of_key(x) // returns order of x;
 	///  extra: 2. s.find_by_order(K) // returns K-th element;
+
+	s2.insert(1); s2.insert(1);
+
+	cout << (int)s2.size() << "\n";
+	
 	
 	return 0;
 }

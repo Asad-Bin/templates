@@ -36,6 +36,7 @@ struct pt {
 
     // for double numbers, for integers it's easier.
     bool operator == (pt a) const {return (fabs(x-a.x) < eps) && (fabs(y-a.y) < eps); }
+    bool operator != (pt a) const {return (fabs(x-a.x) > eps) || (fabs(y-a.y) > eps); }
 
     T sq() {return x*x + y*y;}
 
@@ -48,15 +49,15 @@ struct pt {
         return pt(x * r, y * r);
     }
 
-    double dist(pt a, pt b){ return sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)); }
 };
+double dist(pt a, pt b){ return sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)); }
 ostream& operator<<(ostream& os, pt p){
     return os << "(" << p.x << ", " << p.y << ")";
 }
 
 // for integer numbers
-bool operator==(pt a, pt b) {return a.x == b.x && a.y == b.y;}
-bool operator!=(pt a, pt b) {return !(a == b);}
+// bool operator==(pt a, pt b) {return a.x == b.x && a.y == b.y;}
+// bool operator!=(pt a, pt b) {return !(a == b);}
 
 double abs(pt p){return sqrt(p.sq()); }
 
@@ -100,6 +101,7 @@ pt linearTransform(pt p, pt q, pt r, pt fp, pt fq) {
     return fp + pt{cross(r-p, num), dot(r-p, num)} / pq.sq();
 }
 
+///line operations
 struct line {
     pt a, b; // goes through points a and b
     pt v; T c;  //line form: direction vec [cross] (x, y) = c 
@@ -168,13 +170,6 @@ bool line_line_intersection(pt a, pt b, pt c, pt d, pt &ans) {
     ans = pt((b1 * c2 - b2 * c1) / det, (c1 * a2 - a1 * c2) / det);
     return 1;
 }
-// finds bisector line
-// pt bisector(line l1, line l2, bool interior) {
-//     assert(cross(l1.v, l2.v) != 0); // l1 and l2 cannot be parallel!
-//     T sign = interior ? 1 : -1;
-//     return {l2.v/abs(l2.v) + l1.v/abs(l1.v) * sign,
-//     l2.c/abs(l2.v) + l1.c/abs(l1.v) * sign};
-// }
 // returns true if  point p is on line segment ab
 bool is_point_on_seg(pt a, pt b, pt p) {
     if (fabs(cross(p - b, a - b)) < eps) {
@@ -349,6 +344,7 @@ double ray_ray_distan e(pt as, pt ad, pt bs, pt bd) {
 */
 
 
+/// Polygon things
 double area_of_triangle(pt a, pt b, pt c){
     return abs(cross(b-a, c-a))*0.5;
 }
@@ -365,7 +361,7 @@ bool pointInTriangle(pt a, pt b, pt c, pt point) {
     long long s2 = abs(orient(point, a, b)) + abs(orient(point, b, c)) + abs(orient(point, c, a));
     return s1 == s2;
 }
-pt translation;
+pt translation; // what is it???
 vector<pt> seq;
 void prepare(vector<pt> &points) {
     int n = points.size();
@@ -380,6 +376,7 @@ void prepare(vector<pt> &points) {
     for (int i = 0; i < n; i++) seq[i] = points[i + 1] - points[0];
     translation = points[0];
 }
+//only for convex
 bool point_in_convex_polygon(vector<pt> &seq, pt point) {
     int n = (int)seq.size();
 
@@ -406,6 +403,7 @@ bool above(pt a, pt p) {
 bool crossesRay(pt a, pt p, pt q) {
     return (above(a,q) - above(a,p)) * orient(a,p,q) > 0;
 }
+// for convex and concave
 bool point_in_polygon(vector<pt> &a, pt p, bool strict = true){
     int numCrossings = 0;
     for(int K = 0, n = (int)a.size(); K < n; K++){
@@ -436,7 +434,25 @@ int windingNumber(vector<pt> p, pt a) {
 // };
 
 
-/// circle region
+/// circle thingsss
+double perimeterTriangle(double a, double b, double c) { return a + b + c; }
+double areaTriangle(double a, double b, double c) { double s = perimeterTriangle(a, b, c)/2.0; return sqrt(s * (s - a) * (s - b) * (s - c)); }
+double rInCircle(double ab, double bc, double ca) {
+    // radius of inscribed circle in a triangle
+    return areaTriangle(ab, bc, ca) / (0.5 * perimeterTriangle(ab, bc, ca));
+}
+double rCircumCircle(double ab, double bc, double ca) { return ab * bc * ca / (4.0 * areaTriangle(ab, bc, ca)); }
+double rCircumCircle(pt a, pt b, pt c) { return rCircumCircle(dist(a, b), dist(b, c), dist(c, a)); }
+pt cCircumCircle(pt a, pt b, pt c) {
+    b.x -= a.x;
+    b.y -= a.y;
+    c.x -= a.x;
+    c.y -= a.y;
+    double d = 2.0 * (b.x * c.y - b.y * c.x);
+    double p = (c.y * (b.x * b.x + b.y * b.y) - b.y * (c.x * c.x + c.y * c.y)) / d;
+    double q = (b.x * (c.x * c.x + c.y * c.y) - c.x * (b.x * b.x + b.y * b.y)) / d;
+    return pt(p + a.x, q + a.y);
+}
 // a circle around a triangle {a, b, c}
 pt circum_circle(pt a, pt b, pt c){ // check for 'double' value of pt.
     b = b-a, c = c-a;
