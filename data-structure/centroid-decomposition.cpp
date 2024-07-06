@@ -1,71 +1,33 @@
-const int N = 1e5;
-set<int> ara[N+5];
-int cnt[N+5], par[N+5], ans[N+5];
- 
-/// Use LCA to get common anchestor node of two nodes.
-/// LCA needs to be preprocessed before calling decompose(1, -1); function.
-void dfs0(int u, int p)
-{
-    cnt[u] = 1;
- 
-    for(auto v: ara[u]){
-        if(v != p){
-            dfs0(v, u);
-            cnt[u] += cnt[v];
-        }
+int sub[N], par[N], lvl[N], vis[N], cnt[N];
+
+vector<int> Tree[N];
+int get_sub(int u,int p) {
+    sub[u]=1;
+    for(auto v : Tree[u]){
+        if(v != p && vis[v] == 0) sub[u]+=get_sub(v, u);
     }
+    return sub[u];
 }
-int dfs1(int u, int p, int n)
-{
-    for(auto v: ara[u]){
-        if(v != p && cnt[v] > n/2){
-            // cout << u << ' ' << p << ' ' << v << ' '<< cnt[v] << "\n";
-            return dfs1(v, u, n);
-        }
+int get_centroid(int u,int p,int n) {
+    for(auto v:Tree[u]){
+        if(vis[v]) continue;
+        if(v != p && sub[v] > n/2)
+        return get_centroid(v, u, n);
     }
- 
     return u;
 }
-void decompose(int root, int p, int n)
-{
-    dfs0(root, root);
-    int centroid = dfs1(root, root, cnt[root]);
- 
+void add_centroid(int x, int y) {
+    par[y] = x;
+    lvl[y] = lvl[x] + 1;
+    vis[y] = 1;
+}
+void build_centroid(int u,int p = -1) {
+    int n=get_sub(u,p); // subtree size
+    int centroid = get_centroid(u,p,n);
     if(p == -1) p = centroid;
-    par[centroid] = p;
-
-    for(auto v = ara[centroid].begin(); v != ara[centroid].end(); v++){
-        ara[*v].erase(centroid);
-        decompose(*v, centroid, n);
+    add_centroid(p, centroid);
+    for(auto v : Tree[centroid]){
+        if(vis[v]) continue;
+        build_centroid(v, centroid);
     }
-    ara[centroid].clear();
-}
-
-// example update and query function...
-int dist(int u, int v)
-{
-    return depth[u]+depth[v] - 2*depth[get_lca(u, v)];
-}
-void update(int u)
-{
-    int x = u;
- 
-    while(true){
-        ans[x] = min(ans[x], dist(u, x));
-        if(x == par[x]) break;
-        x = par[x];
-    }
-}
-int query(int u)
-{
-    int mn = inf;
-    int x = u;
- 
-    while(true){
-        mn = min(mn, dist(u, x)+ans[x]);
-        if(x == par[x]) break;
-        x = par[x];
-    }
- 
-    return mn;
 }
