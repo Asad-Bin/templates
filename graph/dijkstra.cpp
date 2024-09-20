@@ -1,5 +1,5 @@
-vector<pair<int, int> > edge[MX+5];
-int dist[MX+5];
+vector<pair<int, int> > edge[N+5];
+int dist[N+5];
 
 void dijkstra(int src, int d, int n)
 {
@@ -14,7 +14,7 @@ void dijkstra(int src, int d, int n)
 		PQ.pop();
 		
 		for(auto e:edge[u]){
-			if(dist[e.first] == -1 || dist[e.first] > max(cost, e.second)){
+			if(dist[e.first] == -1 || dist[e.first] > cost+e.second){
 				dist[e.first] = max(cost, e.second);
 				PQ.push({-1*dist[e.first], e.first});
 			}

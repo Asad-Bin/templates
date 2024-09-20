@@ -15,7 +15,7 @@ void kmpSearch() {                                // this is similar as kmpPrepr
     int i = 0, j = 0;                             // starting values
     while (i < n) {                               // search through string T
             while (j >= 0 && T[i] != P[j]) j = b[j];  // different, reset j using b
-               i++;
+            i++;
             j++;           // if same, advance both pointers
             if (j == m) {  // a match found when j == m
               printf("P is found at index %d in T\n", i - j);
