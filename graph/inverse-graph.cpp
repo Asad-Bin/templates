@@ -11,7 +11,6 @@ void dfs(int u, int n)
 	
 	vis[u] = 1;
 	par[u] = Find(u+1);
-	cnt++;
 	
 	int v = 0;
 	for(auto it: g[u]){
