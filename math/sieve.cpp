@@ -1,31 +1,22 @@
 // sieve :- prime number generator;
 // 0 for prime, 1 for not prime;
 
+const int N = 2e5;
 vector<int> primes;
 vector<bool> mark(1000002);
-void sieve(int n)
+void sieve()
 {
-    int i, j, limit = sqrt(n*1.) + 2;
-
     mark[1] = 1;
 
-    for(i = 4; i<=n; i+=2) mark[i] = 1;
+    for(i = 4; i<=N; i+=2) mark[i] = 1;
 
     primes.push_back(2);
 
-    for(i = 3; i <= n; i += 2)
+    for(ll i = 3; i <= n; i += 2)
     {
-            if(!mark[i])
-            {
-             primes.push_back(i);
-
-              if(i<=limit)
-               {
-                    for(j = i*i; j <= n; j += i*2)
-                    {
-                            mark[j] = 1;
-                    }
-               }
+            if(!mark[i]){
+                primes.push_back(i);
+                for(ll j = i*i; j <= n; j += i*2) mark[j] = 1;
             }
     }
 }
