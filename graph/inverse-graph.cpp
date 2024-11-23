@@ -1,17 +1,10 @@
 const int N = 2e5;
 vector<int> g[N+5], par(N+5), vis(N+5, 0);
-
-int Find(int x)
-{
-	return par[x] == x ? x : par[x] = Find(par[x]);
-}
-void dfs(int u, int n)
-{
+int Find(int x){return par[x] == x ? x : par[x] = Find(par[x]);}
+void dfs(int u, int n){
 	if(vis[u]) return;
-	
 	vis[u] = 1;
 	par[u] = Find(u+1);
-	
 	int v = 0;
 	for(auto it: g[u]){
 		v = Find(v+1);
@@ -34,3 +27,4 @@ call with:
 for(int K = 1; K <= n; K++) if(!vis[K]){
 	dfs(K, n);
 }
+// can be used for: tasts as normal dfs used for
